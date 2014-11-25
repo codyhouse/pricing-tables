@@ -2,10 +2,11 @@ jQuery(document).ready(function($){
 	//hide the subtle gradient layer (.cd-pricing-list > li::after) when pricing table has been scrolled to the end (mobile version only)
 	checkScrolling($('.cd-pricing-body'));
 	$(window).on('resize', function(){
-		window.RequestAnimationFrame(checkScrolling($('.cd-pricing-body')));
+		window.requestAnimationFrame(function(){checkScrolling($('.cd-pricing-body'))});
 	});
 	$('.cd-pricing-body').on('scroll', function(){ 
-		window.RequestAnimationFrame(checkScrolling($('.cd-pricing-body')));
+		var selected = $(this);
+		window.requestAnimationFrame(function(){checkScrolling(selected)});
 	});
 
 	function checkScrolling(tables){
@@ -13,7 +14,7 @@ jQuery(document).ready(function($){
 			var table= $(this),
 				totalTableWidth = parseInt(table.children('.cd-pricing-features').width()),
 		 		tableViewport = parseInt(table.width());
-			if( table.scrollLeft() >= totalTableWidth - tableViewport) {
+			if( table.scrollLeft() >= totalTableWidth - tableViewport -1 ) {
 				table.parent('li').addClass('is-ended');
 			} else {
 				table.parent('li').removeClass('is-ended');
@@ -57,6 +58,8 @@ jQuery(document).ready(function($){
 					pricing_table_wrapper.addClass('is-switched').eq(0).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() {		
 						hide_not_selected_items(table_elements, selected_filter);
 						pricing_table_wrapper.removeClass('is-switched');
+						//change rotation direction if .cd-pricing-list has the .cd-bounce-invert class
+						if(pricing_table.find('.cd-pricing-list').hasClass('cd-bounce-invert')) pricing_table_wrapper.toggleClass('reverse-animation');
 					});
 				}
 			});

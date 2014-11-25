@@ -170,7 +170,7 @@ Main Components
 	}
 
 	&.is-switched {
-
+		/* totate the tables - anticlockwise rotation */
 		.is-visible {
 			@include transform(rotateY(180deg));
 			@include animation(cd-rotate $cd-animation-duration);
@@ -179,6 +179,24 @@ Main Components
 		.is-hidden {
 			@include transform(rotateY(0));
 			@include animation(cd-rotate-inverse $cd-animation-duration);
+			opacity: 0;
+		}
+
+		.is-selected {
+			opacity: 1;
+		}
+	}
+
+	&.is-switched.reverse-animation {
+		/* invert rotation direction - clockwise rotation */
+		.is-visible {
+			@include transform(rotateY(-180deg));
+			@include animation(cd-rotate-back $cd-animation-duration);
+		}
+
+		.is-hidden {
+			@include transform(rotateY(0));
+			@include animation(cd-rotate-inverse-back $cd-animation-duration);
 			opacity: 0;
 		}
 
@@ -606,6 +624,35 @@ xkeyframes
 	70% {
 		/* this creates the bounce effect */
 		@include transform(perspective($cd-perspective) rotateY(20deg));
+	}
+
+	100% {
+		@include transform(perspective($cd-perspective) rotateY(0));
+	}
+}
+@include keyframes(cd-rotate-back) {
+	0% {
+		@include transform(perspective($cd-perspective) rotateY(0));
+	}
+
+	70% {
+		/* this creates the bounce effect */
+		@include transform(perspective($cd-perspective) rotateY(-200deg)); 
+	}
+
+	100% {
+		@include transform(perspective($cd-perspective) rotateY(-180deg));
+	}
+}
+
+@include keyframes(cd-rotate-inverse-back) {
+	0% {
+		@include transform(perspective($cd-perspective) rotateY(180deg));
+	}
+
+	70% {
+		/* this creates the bounce effect */
+		@include transform(perspective($cd-perspective) rotateY(-20deg));
 	}
 
 	100% {
